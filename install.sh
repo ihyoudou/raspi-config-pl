@@ -1,3 +1,3 @@
 echo Instalowanie raspi-config...
-sudo mv /usr/bin/raspi-config /usr/bin/raspi-config-old
-sudo mv /home/pi/raspi-config-pi /usr/bin/raspi-config
+sudo mv /usr/bin/raspi-config /usr/bin/raspi-config-en
+sudo mv /home/pi/raspi-config-pl /usr/bin/raspi-config
