@@ -27,10 +27,9 @@ calc_wt_size() {
 
 do_about() {
   whiptail --msgbox "\
-This tool provides a straight-forward way of doing initial
-configuration of the Raspberry Pi. Although it can be run
-at any time, some of the options may have difficulties if
-you have heavily customised your installation.\
+  To najrzedzie sluzy do zmiany ogolnych ustawien
+  Raspberry Pi. To narzedzie moze byc uruchomione
+  w innym czasie jezeli chcialbys cos zmienic\
 " 20 70 1
 }
 
@@ -705,10 +704,10 @@ set_camera() {
 
 do_camera() {
   if [ ! -e /boot/start_x.elf ]; then
-    whiptail --msgbox "Your firmware appears to be out of date (no start_x.elf). Please update" 20 60 2
+    whiptail --msgbox "To oprogramowanie moze bys stare (no start_x.elf). Prosze zaaktualizowac" 20 60 2
     return 1
   fi
-  whiptail --yesno "Enable support for Raspberry Pi camera?" 20 60 2 \
+  whiptail --yesno "Wlaczyc obsluge oficjalnej kamery dla Raspberry Pi?" 20 60 2 \
     --yes-button Disable --no-button Enable
   RET=$?
   if [ $RET -eq 0 ] || [ $RET -eq 1 ]; then
@@ -722,16 +721,16 @@ do_camera() {
 do_update() {
   apt-get update &&
   apt-get install raspi-config &&
-  printf "Sleeping 5 seconds before reloading raspi-config\n" &&
+  printf "Idz spac na 5 sekund przed uruchomieniem raspi-config\n" &&
   sleep 5 &&
   exec raspi-config
 }
 
 do_audio() {
-  AUDIO_OUT=$(whiptail --menu "Choose the audio output" 20 60 10 \
+  AUDIO_OUT=$(whiptail --menu "Wybierz zrodlo dzwieku" 20 60 10 \
     "0" "Auto" \
-    "1" "Force 3.5mm ('headphone') jack" \
-    "2" "Force HDMI" \
+    "1" "3.5mm ('sluchawkowe') zlacze" \
+    "2" "HDMI" \
     3>&1 1>&2 2>&3)
   if [ $? -eq 0 ]; then
     amixer cset numid=3 "$AUDIO_OUT"
@@ -741,7 +740,7 @@ do_audio() {
 do_finish() {
   disable_raspi_config_at_boot
   if [ $ASK_TO_REBOOT -eq 1 ]; then
-    whiptail --yesno "Would you like to reboot now?" 20 60 2
+    whiptail --yesno "Chcesz zrestartowac teraz?" 20 60 2
     if [ $? -eq 0 ]; then # yes
       sync
       reboot
@@ -810,7 +809,7 @@ do_apply_os_config() {
       DEBLANGUAGE="zh_CN.UTF-8"
       ;;
     *)
-      printf "Language '%s' not handled currently. Run sudo raspi-config to set up" "$NOOBSLANGUAGE"
+      printf "Jezyk '%s' nie jest wspierany aktualnie.Uruchom sudo raspi-config do ustawienia go." "$NOOBSLANGUAGE"
       ;;
   esac
 
@@ -844,18 +843,18 @@ do
   case $i in
   --memory-split)
     OPT_MEMORY_SPLIT=GET
-    printf "Not currently supported\n"
+    printf "Aktualnie niewspierany\n"
     exit 1
     ;;
   --memory-split=*)
     OPT_MEMORY_SPLIT=`echo $i | sed 's/[-a-zA-Z0-9]*=//'`
-    printf "Not currently supported\n"
+    printf "Aktualnie niewspierany\n"
     exit 1
     ;;
   --expand-rootfs)
     INTERACTIVE=False
     do_expand_rootfs
-    printf "Please reboot\n"
+    printf "Prosze uruchomic ponownie\n"
     exit 0
     ;;
   --apply-os-config)
@@ -878,7 +877,7 @@ done
 
 # Everything else needs to be run as root
 if [ $(id -u) -ne 0 ]; then
-  printf "Script must be run as root. Try 'sudo raspi-config'\n"
+  printf "Skrypt musi byc uruchomiony jako sudo. Sprobuj 'sudo raspi-config'\n"
   exit 1
 fi
 
@@ -889,10 +888,10 @@ if [ -n "${OPT_MEMORY_SPLIT:-}" ]; then
 fi
 
 do_internationalisation_menu() {
-  FUN=$(whiptail --title "Raspberry Pi Software Configuration Tool (raspi-config)" --menu "Internationalisation Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-    "I1 Change Locale" "Set up language and regional settings to match your location" \
-    "I2 Change Timezone" "Set up timezone to match your location" \
-    "I3 Change Keyboard Layout" "Set the keyboard layout to match your keyboard" \
+  FUN=$(whiptail --title "Ustawienia regionalne Raspberry Pi (raspi-config)" --menu "Ustawienia regionalne" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+    "I1 Zmien lokazlicje" "Ustaw jezyk i region w ktorym sie znajdujesz" \
+    "I2 Zmien strefe czasowa" "Ustaw swoja strefe czasowa" \
+    "I3 Zmien klawiature" "Zmien ustawienia klawiatury" \
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
@@ -908,17 +907,17 @@ do_internationalisation_menu() {
 }
 
 do_advanced_menu() {
-  FUN=$(whiptail --title "Raspberry Pi Software Configuration Tool (raspi-config)" --menu "Advanced Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
-    "A1 Overscan" "You may need to configure overscan if black bars are present on display" \
-    "A2 Hostname" "Set the visible name for this Pi on a network" \
-    "A3 Memory Split" "Change the amount of memory made available to the GPU" \
-    "A4 SSH" "Enable/Disable remote command line access to your Pi using SSH" \
+  FUN=$(whiptail --title "Raspberry Pi Software Configuration Tool (raspi-config)" --menu "Menu zaawansowane" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Back --ok-button Select \
+    "A1 Skalowanie" "Musisz przeskalowac obraz jezeli wystepuja czarne paski" \
+    "A2 Nazwa hosta" "Zmien widoczna nazwe hosta raspberry pi" \
+    "A3 Podzial pamieci" "Zmien ilosc pamieci przydzielonej dla GPU" \
+    "A4 SSH" "Wlaczy/Wylacz mozliwosc zalogowania sie przez SSH" \
     "A5 Device Tree" "Enable/Disable the use of Device Tree" \
-    "A6 SPI" "Enable/Disable automatic loading of SPI kernel module (needed for e.g. PiFace)" \
-    "A7 I2C" "Enable/Disable automatic loading of I2C kernel module" \
-    "A8 Serial" "Enable/Disable shell and kernel messages on the serial connection" \
-    "A9 Audio" "Force audio out through HDMI or 3.5mm jack" \
-    "A0 Update" "Update this tool to the latest version" \
+    "A6 SPI" "Wlaczy/Wylacz automatyczne ladowanie modulu SPI (potrzebnego np. do PiFace)" \
+    "A7 I2C" "Wlaczy/Wylacz automatyczne ladowanie modulu I2C" \
+    "A8 Serial" "Wlaczy/Wylacz shell i komunikaty kernelu przez port serial" \
+    "A9 Audio" "Wybierz docelowe wyjscie audio (HDMI/jack)" \
+    "A0 Aktualizacja" "Aktualizacja tego narzedzia" \
     3>&1 1>&2 2>&3)
   RET=$?
   if [ $RET -eq 1 ]; then
@@ -935,7 +934,7 @@ do_advanced_menu() {
       A8\ *) do_serial ;;
       A9\ *) do_audio ;;
       A0\ *) do_update ;;
-      *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
+      *) whiptail --msgbox "Blad: nierozpoznawalna komenda" 20 60 1 ;;
     esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
   fi
 }
