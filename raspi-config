@@ -189,7 +189,7 @@ do_change_pass() {
 
 do_configure_keyboard() {
   dpkg-reconfigure keyboard-configuration &&
-  printf "Reloading keymap. This may take a short while\n" &&
+  printf "Przeladowywanie ustawien klawiatury. To moze chwile zajac\n" &&
   invoke-rc.d keyboard-setup start
 }
 
@@ -721,7 +721,7 @@ do_camera() {
 do_update() {
   apt-get update &&
   apt-get install raspi-config &&
-  printf "Idz spac na 5 sekund przed uruchomieniem raspi-config\n" &&
+  printf "Idz spac na 5 sekund przed zamknieciem raspi-config\n" &&
   sleep 5 &&
   exec raspi-config
 }
@@ -761,13 +761,13 @@ do_apply_os_config() {
   NOOBSKEYBOARD=$(get_json_string_val /boot/os_config.json keyboard)
 
   if [ -n "$NOOBSFLAVOUR" ]; then
-    printf "Setting flavour to %s based on os_config.json from NOOBS. May take a while\n" "$NOOBSFLAVOUR"
+    printf "Ustawianie flavour to %s oparty na os_config.json z NOOBS. Moze to chwile to potrwace\n" "$NOOBSFLAVOUR"
 
     if printf "%s" "$NOOBSFLAVOUR" | grep -q "Scratch"; then
       disable_raspi_config_at_boot
       enable_boot_to_scratch
     else
-      printf "Unrecognised flavour. Ignoring\n"
+      printf "Nie skategoryzowane flavour. Ignorowanie\n"
     fi
   fi
 
@@ -814,7 +814,7 @@ do_apply_os_config() {
   esac
 
   if [ -n "$DEBLANGUAGE" ]; then
-    printf "Setting language to %s based on os_config.json from NOOBS. May take a while\n" "$DEBLANGUAGE"
+    printf "Ustawianie jezyka %s opierane na os_config.json z NOOBS. Moze to chwile zajac\n" "$DEBLANGUAGE"
     cat << EOF | debconf-set-selections
 locales   locales/locales_to_be_generated multiselect     $DEBLANGUAGE UTF-8
 EOF
@@ -827,7 +827,7 @@ EOF
   fi
 
   if [ -n "$NOOBSKEYBOARD" -a "$NOOBSKEYBOARD" != "gb" ]; then
-    printf "Setting keyboard layout to %s based on os_config.json from NOOBS. May take a while\n" "$NOOBSKEYBOARD"
+    printf "Ustawianie konfiguracji klawiatury %s oparty na os_config.json z NOOBS. Moze to chwile zajac\n" "$NOOBSKEYBOARD"
     sed -i /etc/default/keyboard -e "s/^XKBLAYOUT.*/XKBLAYOUT=\"$NOOBSKEYBOARD\"/"
     dpkg-reconfigure -f noninteractive keyboard-configuration
     invoke-rc.d keyboard-setup start
@@ -935,7 +935,7 @@ do_advanced_menu() {
       A9\ *) do_audio ;;
       A0\ *) do_update ;;
       *) whiptail --msgbox "Blad: nierozpoznawalna komenda" 20 60 1 ;;
-    esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+    esac || whiptail --msgbox "Jest blad podczas wykonywania $FUN" 20 60 1
   fi
 }
 
@@ -970,8 +970,8 @@ while true; do
       7\ *) do_overclock ;;
       8\ *) do_advanced_menu ;;
       9\ *) do_about ;;
-      *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
-    esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+      *) whiptail --msgbox "Nieznana komenda, sprobuj jeszcze raz" 20 60 1 ;;
+    esac || whiptail --msgbox "Problem podczas uruchamiania $FUN" 20 60 1
   else
     exit 1
   fi
