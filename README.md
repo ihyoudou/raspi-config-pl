@@ -1,9 +1,12 @@
 # raspi-config-pl
-Polish version of tools raspi-config
-Polska wersja narzędzia raspi-config
+Polska wersja narzędzia raspi-config dla Raspberry Pi
 
-Jak zainstalować?
-sudo mv /home/pi/raspi-config-pl/raspi-config /usr/bin/raspi-config
-Jeżeli chcesz mieć też oryginalne to wpisz tą komendę przed pierwszą.
+Jak zainstalować nową wersję?<br>
+<code>
+wget https://github.com/matess1999/raspi-config-pl/archive/master.zip && unzip master.zip && cd raspi-config-pl-master && sudo mv raspi-config /usr/bin/raspi-config
+</code><br>
+Jeżeli chcesz zachować oryginalne, angielskie raspi-config, wpisz tą komendę przed pierwszą.
+<code>
 sudo mv /usr/bin/raspi-config /usr/bin/raspi-config-en
+</code><br>
 Teraz będzie oryginalne raspi-config doptępne pod "raspi-config-en"
