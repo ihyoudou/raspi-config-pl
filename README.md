@@ -1,5 +1,5 @@
 # raspi-config-pl
-<strong>Ta wersja nie była bardzo długo aktualizowana i może powodować problemy, więc została zaarchiwizowana. Jeżeli chcesz poprawić ten projekt, dokonał fork na swoje konto</strong><br>
+<strong>Ta wersja nie była bardzo długo aktualizowana i może powodować problemy, więc została zaarchiwizowana. Jeżeli chcesz poprawić ten projekt, dokonaj fork na swoje konto</strong><br>
 Polska wersja narzędzia raspi-config dla Raspberry Pi
 
 <b>Jak zainstalować nową wersję?<br></b>
